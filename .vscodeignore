@@ -1,4 +1,9 @@
 node_modules/**
 !node_modules/web-tree-sitter/**
+.ruby-lsp/**
+tmp/**
+.DS_Store
 src/**
 tsconfig.json
+assets/**/*.mov
+.gitignore
