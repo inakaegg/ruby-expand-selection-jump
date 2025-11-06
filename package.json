@@ -1,0 +1,83 @@
+{
+  "name": "ruby-expand-selection-jump",
+  "displayName": "Ruby Expand Selection & Jump",
+  "description": "Tree-sitter powered commands to expand/shrink selection and jump between matching do/def/if…end blocks in Ruby.",
+  "icon": "assets/logo.png",
+  "version": "0.0.1",
+  "publisher": "inakaegg",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inakaegg/ruby-expand-selection-jump.git"
+  },
+  "bugs": {
+    "url": "https://github.com/inakaegg/ruby-expand-selection-jump/issues"
+  },
+  "homepage": "https://github.com/inakaegg/ruby-expand-selection-jump",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "ruby",
+    "expand selection",
+    "smart selection",
+    "jump",
+    "do end",
+    "tree-sitter"
+  ],
+  "activationEvents": [
+    "onLanguage:ruby",
+    "onCommand:rubyExpandSelection.jump"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "rubyExpandSelection.jump",
+        "title": "Ruby: Jump to Matching do/def/if … end"
+      },
+      {
+        "command": "rubyExpandSelection.expandSelection",
+        "title": "Ruby: Expand Selection (Tree-sitter)"
+      },
+      {
+        "command": "rubyExpandSelection.shrinkSelection",
+        "title": "Ruby: Shrink Selection (Tree-sitter)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "rubyExpandSelection.jump",
+        "key": "ctrl+shift+5",
+        "mac": "cmd+shift+5",
+        "when": "editorTextFocus && editorLangId == ruby"
+      },
+      {
+        "command": "rubyExpandSelection.expandSelection",
+        "key": "shift+alt+right",
+        "mac": "shift+option+right",
+        "when": "editorTextFocus && editorLangId == ruby"
+      },
+      {
+        "command": "rubyExpandSelection.shrinkSelection",
+        "key": "shift+alt+left",
+        "mac": "shift+option+left",
+        "when": "editorTextFocus && editorLangId == ruby"
+      }
+    ]
+  },
+  "main": "./out/extension.js",
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -w -p ."
+  },
+  "devDependencies": {
+    "@types/node": "^24.9.2",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "web-tree-sitter": "^0.25.10"
+  }
+}
