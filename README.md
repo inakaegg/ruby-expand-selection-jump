@@ -83,8 +83,6 @@ Brackets `[ … ]` highlight the current selection.
 
 ![Jump animation](assets/jump.gif)
 
-Prefer a sharper capture? Grab the [MP4 version](assets/jump.mp4).
-
 ## Installation
 
 ### VS Code Marketplace
@@ -101,6 +99,11 @@ Once the listing is live, search for “Ruby Expand Selection & Jump” in the M
 4. Press F5 (Run Extension) and try the commands in the launched Extension Development Host
 
 The `tree-sitter/` folder already ships the runtime (`tree-sitter.wasm`) and Ruby grammar (`tree-sitter-ruby.wasm`), so no extra build steps are needed.
+
+### Testing
+
+Run `npm run test` to build the extension and execute the Tree-sitter–based jump regression tests.  
+These tests feed sample `while`/`until`/`for` blocks (with and without inline `do`) directly through `computeBlockTargetOffset`, ensuring the jump command keeps working even without VS Code running.
 
 ## Limitations / roadmap
 - Heredocs (`<<ID`), `%q/%Q/%w`-style literals, and regex literals are exposed by Tree-sitter as string nodes. This extension currently treats them as opaque strings, so nested Ruby code inside them isn’t inspected.

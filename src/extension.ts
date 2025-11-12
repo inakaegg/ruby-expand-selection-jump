@@ -412,16 +412,24 @@ function findAdditionalStartTokens(blockNode: SyntaxNode): SyntaxNode[] {
       if (child?.type !== 'do') {
         continue;
       }
-      const keywordChild = child.child(0);
-      if (keywordChild && keywordChild.type === 'do') {
+      const keywordChild = firstChildOfType(child, 'do');
+      if (keywordChild) {
         extra.push(keywordChild);
-      } else {
-        extra.push(child);
       }
       break;
     }
   }
   return extra;
+}
+
+function firstChildOfType(node: SyntaxNode, type: string): SyntaxNode | null {
+  for (let i = 0; i < node.childCount; i++) {
+    const child = node.child(i);
+    if (child?.type === type) {
+      return child;
+    }
+  }
+  return null;
 }
 
 function collectMiddleTokens(node: SyntaxNode, result: SyntaxNode[]): void {
@@ -1043,5 +1051,6 @@ export const __internals = {
   collectSelectionRanges,
   selectionToByteRange,
   findExpandedRange,
-  findShrunkRange
+  findShrunkRange,
+  computeBlockTargetOffset
 };

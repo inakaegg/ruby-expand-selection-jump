@@ -3,7 +3,7 @@
   "displayName": "Ruby Expand Selection & Jump",
   "description": "Tree-sitter powered commands to expand/shrink selection and jump between matching do/def/if…end blocks in Ruby.",
   "icon": "assets/logo.png",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "inakaegg",
   "repository": {
     "type": "git",
@@ -70,7 +70,8 @@
   "main": "./out/extension.js",
   "scripts": {
     "compile": "tsc -p .",
-    "watch": "tsc -w -p ."
+    "watch": "tsc -w -p .",
+    "test": "npm run compile && node tests/jump.test.js"
   },
   "devDependencies": {
     "@types/node": "^24.9.2",

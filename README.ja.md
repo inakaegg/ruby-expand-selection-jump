@@ -81,8 +81,6 @@ end
 
 ![ジャンプのアニメーション](assets/jump.gif)
 
-高画質で確認したい場合は [MP4 版](assets/jump.mp4) も用意しています。
-
 ## インストール
 
 ### VS Code Marketplace
@@ -99,6 +97,11 @@ end
 4. F5（Run Extension）で開いた別ウィンドウで Ruby ファイルを開き、コマンドを試す
 
 `tree-sitter/` ディレクトリに runtime (`tree-sitter.wasm`) と Ruby 用 `tree-sitter-ruby.wasm` を同梱しているため、追加のビルド手順は不要です。
+
+### テスト
+
+`npm run test` を実行すると、拡張をビルドしたうえで Tree-sitter ベースのジャンプ回帰テストが走ります。  
+VS Code を立ち上げなくても `while` / `until` / `for` の各ブロック（`do` あり/なし）の対応キーワードが正しく往復できるかを `computeBlockTargetOffset` に直接入力して検証しています。
 
 ## 既知の制限 / TODO
 - ヒアドキュメント（`<<ID`）や `%q/%Q/%w` などの `%` 記法、正規表現リテラルは Tree-sitter 上では文字列リテラルとして扱われるため、内部の Ruby コードまでは解析しません。これらの内側に入った場合は外側の文字列単位で処理されます。
