@@ -1,14 +1,23 @@
 # Ruby Expand Selection & Jump
 
+[![CI](https://github.com/inakaegg/ruby-expand-selection-jump/actions/workflows/ci.yml/badge.svg)](https://github.com/inakaegg/ruby-expand-selection-jump/actions/workflows/ci.yml)
+
 English documentation is below. 🇯🇵 日本語版は [README.ja.md](./README.ja.md) をご覧ください。
 
 Tree-sitter powered VS Code commands that understand Ruby blocks: jump between matching keywords (Vim `%` style) and grow/shrink selections by Ruby syntax nodes.
 
 ## Highlights
+
 - Jump instantly between matching `do/def/if … end`, `class/module`, etc.
 - Landing on `else/elsif/when/rescue/ensure` takes you to the corresponding `end`.
 - Uses `web-tree-sitter` with a bundled `tree-sitter-ruby.wasm`, so comments and literals aren’t mistaken for real keywords.
 - Expand and shrink selections along Ruby syntax boundaries. Every expand step is remembered so shrink walks you back to the original caret position.
+
+## How it works
+
+- Each command parses the current Ruby document with `web-tree-sitter` and the bundled Ruby grammar. No separate Ruby or Tree-sitter installation is required.
+- Block jumping uses syntax nodes to find matching `do/def/if … end` structures and falls back to bracket matching for `()`, `[]`, and `{}`.
+- Selection expansion follows progressively larger syntax nodes. Its history is stored per document and per cursor, so shrinking can retrace the same path and multiple cursors can move independently.
 
 ## Commands
 
@@ -86,13 +95,20 @@ Brackets `[ … ]` highlight the current selection.
 ## Installation
 
 ### VS Code Marketplace
-Once the listing is live, search for “Ruby Expand Selection & Jump” in the Marketplace to install.
 
-### VSIX / local install
-1. Download the `.vsix` from Releases and choose **Extensions › … › Install from VSIX**.
-2. Or clone this repository and run the extension from source (see below).
+Install [Ruby Expand Selection & Jump from the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=inakaegg.ruby-expand-selection-jump), or open VS Code Quick Open (`Ctrl+P` / `⌘P`) and run:
+
+```text
+ext install inakaegg.ruby-expand-selection-jump
+```
+
+## Requirements
+
+- VS Code 1.80.0 or later
+- A document recognized by VS Code as Ruby (`ruby` language ID)
 
 ## Development setup
+
 1. Open this folder in VS Code
 2. `npm install`
 3. `npm run compile`
@@ -105,7 +121,10 @@ The `tree-sitter/` folder already ships the runtime (`tree-sitter.wasm`) and Rub
 Run `npm run test` to build the extension and execute the Tree-sitter–based jump regression tests.  
 These tests feed sample `while`/`until`/`for` blocks (with and without inline `do`) directly through `computeBlockTargetOffset`, ensuring the jump command keeps working even without VS Code running.
 
-## Limitations / roadmap
+GitHub Actions runs the same command for every push and pull request.
+
+## Limitations
+
 - Heredocs (`<<ID`), `%q/%Q/%w`-style literals, and regex literals are exposed by Tree-sitter as string nodes. This extension currently treats them as opaque strings, so nested Ruby code inside them isn’t inspected.
 - Building the syntax tree can take a fraction of a second on very large files the first time you run a command.
 - Behaviour ultimately depends on the Ruby grammar provided by Tree-sitter. If you hit issues with newer Ruby syntax, please open an issue.

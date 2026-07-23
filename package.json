@@ -5,6 +5,7 @@
   "icon": "assets/logo.png",
   "version": "0.0.2",
   "publisher": "inakaegg",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/inakaegg/ruby-expand-selection-jump.git"

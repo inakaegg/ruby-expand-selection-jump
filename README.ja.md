@@ -1,12 +1,21 @@
 # Ruby Expand Selection & Jump
 
+[![CI](https://github.com/inakaegg/ruby-expand-selection-jump/actions/workflows/ci.yml/badge.svg)](https://github.com/inakaegg/ruby-expand-selection-jump/actions/workflows/ci.yml)
+
 Tree-sitter で Ruby の構文を解析し、選択範囲の拡張 / 縮小と `def`〜`end` のような対応キーワード間ジャンプを提供する VS Code 拡張です。
 
 ## 主な機能
+
 - `do/def/if … end`、`class/module` などの対応キーワードへ一発ジャンプ。
 - `else/elsif/when/rescue/ensure` の位置からも安全に末尾 `end` へ移動。
 - Tree-sitter (`web-tree-sitter` + 同梱 `tree-sitter-ruby.wasm`) による AST 解析で、コメントや文字列内のキーワードを自動判別。
 - Ruby の構文単位で選択範囲を段階的に拡張 (`Expand Selection`) / 逆順に縮小 (`Shrink Selection`)。拡張したステップを記憶しているため、縮小すると元のカーソル位置まで同じ階段を戻れます。
+
+## 仕組み
+
+- 各コマンドの実行時に、`web-tree-sitter` と同梱の Ruby 文法で現在の文書を解析します。RubyやTree-sitterを別途インストールする必要はありません。
+- ブロック間ジャンプは構文ノードから対応する `do/def/if … end` を特定し、`()`、`[]`、`{}` では括弧の対応位置へジャンプします。
+- 選択範囲は、より大きな構文ノードへ段階的に拡張します。履歴を文書とカーソルごとに保持するため、同じ経路を縮小で戻ることができ、複数カーソルも個別に動作します。
 
 ## コマンド一覧
 
@@ -84,13 +93,20 @@ end
 ## インストール
 
 ### VS Code Marketplace
-公開後は VS Code Marketplace で “Ruby Expand Selection & Jump” を検索してインストールできます。
 
-### VSIX またはローカルで試す場合
-1. Releases などから `.vsix` を取得し、VS Code の「Extensions > … > Install from VSIX」で導入。
-2. あるいはこのリポジトリを `git clone` し、開発版として動かすこともできます（下記参照）。
+[VS Code MarketplaceのRuby Expand Selection & Jump](https://marketplace.visualstudio.com/items?itemName=inakaegg.ruby-expand-selection-jump)からインストールできます。または、VS CodeのQuick Open（`Ctrl+P` / `⌘P`）で次を実行します。
+
+```text
+ext install inakaegg.ruby-expand-selection-jump
+```
+
+## 動作条件
+
+- VS Code 1.80.0以降
+- VS CodeでRuby（language ID: `ruby`）として認識されている文書
 
 ## 開発者向けセットアップ
+
 1. このフォルダを VS Code で開く
 2. `npm install`
 3. `npm run compile`
@@ -103,7 +119,10 @@ end
 `npm run test` を実行すると、拡張をビルドしたうえで Tree-sitter ベースのジャンプ回帰テストが走ります。  
 VS Code を立ち上げなくても `while` / `until` / `for` の各ブロック（`do` あり/なし）の対応キーワードが正しく往復できるかを `computeBlockTargetOffset` に直接入力して検証しています。
 
-## 既知の制限 / TODO
+GitHub Actionsでも、pushおよびpull requestごとに同じコマンドを実行します。
+
+## 既知の制限
+
 - ヒアドキュメント（`<<ID`）や `%q/%Q/%w` などの `%` 記法、正規表現リテラルは Tree-sitter 上では文字列リテラルとして扱われるため、内部の Ruby コードまでは解析しません。これらの内側に入った場合は外側の文字列単位で処理されます。
 - 初回実行時は Tree-sitter の構文木構築が入るため、非常に大きなファイルではわずかに遅延する場合があります。
 - AST 解析ベースのため、Tree-sitter の解析結果に依存します。Ruby の最新構文で問題に遭遇した場合は Issue でご報告ください。
