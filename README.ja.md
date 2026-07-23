@@ -116,8 +116,9 @@ ext install inakaegg.ruby-expand-selection-jump
 
 ### テスト
 
-`npm run test` を実行すると、拡張をビルドしたうえで Tree-sitter ベースのジャンプ回帰テストが走ります。  
-VS Code を立ち上げなくても `while` / `until` / `for` の各ブロック（`do` あり/なし）の対応キーワードが正しく往復できるかを `computeBlockTargetOffset` に直接入力して検証しています。
+`npm run test` を実行すると、拡張をビルドしたうえで、VS Codeを立ち上げずにTree-sitterベースの回帰テストが走ります。
+ジャンプテストでは、`while` / `until` / `for` の各ブロック（`do` あり/なし）の対応キーワードが正しく往復できるかを `computeBlockTargetOffset` に直接入力して検証します。
+拡張 / 縮小のゴールデンテストでは、上記の10段階の選択例に対してコマンドを実行し、縮小で同じ経路を元のカーソルまで逆順に戻れることを検証します。
 
 GitHub Actionsでも、pushおよびpull requestごとに同じコマンドを実行します。
 

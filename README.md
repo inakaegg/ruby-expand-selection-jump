@@ -118,8 +118,9 @@ The `tree-sitter/` folder already ships the runtime (`tree-sitter.wasm`) and Rub
 
 ### Testing
 
-Run `npm run test` to build the extension and execute the Tree-sitter–based jump regression tests.  
-These tests feed sample `while`/`until`/`for` blocks (with and without inline `do`) directly through `computeBlockTargetOffset`, ensuring the jump command keeps working even without VS Code running.
+Run `npm run test` to build the extension and execute the Tree-sitter–based regression tests without launching VS Code.
+The jump tests feed sample `while`/`until`/`for` blocks (with and without inline `do`) directly through `computeBlockTargetOffset`.
+The expand/shrink golden test runs the commands against the ten-step selection example above and verifies that shrinking retraces the same path back to the original caret.
 
 GitHub Actions runs the same command for every push and pull request.
 
